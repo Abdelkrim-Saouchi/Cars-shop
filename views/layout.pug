@@ -6,5 +6,19 @@ html(lang="en")
     meta(name="viewport", content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0")
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
-  body
-    block content
+  body(class='flex flex-col min-h-screen')
+    header(class='px-6 py-2 flex justify-between items-center gap-4 bg-black text-white text-md md:text-xl') 
+      h1(class='font-bold text-xl md:text-2xl') Car Shop 
+      nav 
+        ul(class='flex gap-4 items-center justify-between') 
+          li(class='font-semibold') 
+            a(href="cars") Cars 
+          li(class='font-semibold') 
+            a(href="brands") Brands 
+          li(class='font-semibold') 
+            a(href="categories") Categories   
+    main(class='px-6 py-2 grow')    
+      block content
+    footer(class='px-6 py-2 bg-black text-white text-md text-center') 
+      div 
+        a(href="https://github.com/Abdelkrim-Saouchi", target="_blank", class='hover:opacity-75') Created by Krimothiazine
