@@ -40,3 +40,5 @@ router.get("/brand/:id", (req, res, next) => {
 router.get("/", (req, res, next) => {
   res.send("All brands list: not implemented");
 });
+
+module.exports = router;

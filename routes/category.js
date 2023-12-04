@@ -40,3 +40,5 @@ router.get("/category/:id", (req, res) => {
 router.get("/", (req, res) => {
   res.send("All categories: not implemented");
 });
+
+module.exports = router;

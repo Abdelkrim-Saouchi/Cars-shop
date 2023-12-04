@@ -40,3 +40,5 @@ router.get("/car/:id", (req, res) => {
 router.get("/", (req, res) => {
   res.send("get request to get All cars");
 });
+
+module.exports = router;
