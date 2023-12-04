@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node ./bin/www",
     "devstart": "nodemon ./bin/www",
-    "serverstart": "DEBUG=cars-shop:* npm run devstart"
+    "serverstart": "DEBUG=cars-shop:* npm run devstart",
+    "tailwind:css": "npx tailwindcss -i public/stylesheets/tailwind.css -o public/stylesheets/style.css --watch"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -16,6 +17,9 @@
     "pug": "^3.0.2"
   },
   "devDependencies": {
-    "nodemon": "^3.0.2"
+    "nodemon": "^3.0.2",
+    "prettier": "^3.1.0",
+    "prettier-plugin-tailwindcss": "^0.5.7",
+    "tailwindcss": "^3.3.5"
   }
 }
