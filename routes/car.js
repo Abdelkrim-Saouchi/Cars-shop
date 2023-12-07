@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const carController = require("../controllers/carController");
 
 // GET request to create car
 router.get("/car/create", (req, res) => {
@@ -37,8 +38,6 @@ router.get("/car/:id", (req, res) => {
 });
 
 // GET request for All cars
-router.get("/", (req, res) => {
-  res.send("get request to get All cars");
-});
+router.get("/", carController.carsList);
 
 module.exports = router;
