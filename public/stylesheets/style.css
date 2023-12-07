@@ -764,6 +764,10 @@ video {
   background-color: rgb(0 0 0 / var(--tw-bg-opacity));
 }
 
+.hover\:text-center:hover {
+  text-align: center;
+}
+
 .hover\:text-black:hover {
   --tw-text-opacity: 1;
   color: rgb(0 0 0 / var(--tw-text-opacity));

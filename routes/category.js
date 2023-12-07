@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const categoryController = require("../controllers/categoryController");
 
 // GET request to create category
 router.get("/category/create", (req, res) => {
@@ -37,8 +38,6 @@ router.get("/category/:id", (req, res) => {
 });
 
 // GET request for all categories
-router.get("/", (req, res) => {
-  res.send("All categories: not implemented");
-});
+router.get("/", categoryController.categoryList);
 
 module.exports = router;
