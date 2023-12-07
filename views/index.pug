@@ -10,8 +10,8 @@ block content
   
   section(class="my-6 flex flex-col justify-between sm:items-center gap-4 sm:flex-row")
     -const num = {Brands: 4, Categories: 10, Cars: 150}
-    each val, key in num 
+    each val, key in recordsCount 
       div(class="p-4 flex-1 flex flex-col items-center gap-3 border border-black rounded")
         h3(class="text-xl font-bold") #{key}
-        p(class="font-semibold opacity-75")  #{val}
+        p(class="font-semibold opacity-75") #{val}
 
