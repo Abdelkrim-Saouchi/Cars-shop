@@ -1,5 +1,17 @@
 extends layout
 
 block content
-  h1= title
-  p(class="text-3xl font-bold ml-4 bg-slate-500") Welcome to #{title}
+  section(class="flex flex-col md:flex-row gap-4 items-center md:justify-center") 
+    div(class="flex flex-col gap-4 items-center md:items-start")
+      h2(class="text-3xl sm:text-4xl font-bold") Find Your Dream Car
+      p(class="font-semibold opacity-80") Explore a wide range of cars and find the perfect one for you.
+      button(class="p-2 bg-black text-white border border-black rounded hover:bg-white hover:text-black") Browse Cars 
+    img(src="/images/hero-image.jpg", alt="hero image", class="w-3/4 md:w-1/3") 
+  
+  section(class="my-6 flex flex-col justify-between sm:items-center gap-4 sm:flex-row")
+    -const num = {Brands: 4, Categories: 10, Cars: 150}
+    each val, key in num 
+      div(class="p-4 flex-1 flex flex-col items-center gap-3 border border-black rounded")
+        h3(class="text-xl font-bold") #{key}
+        p(class="font-semibold opacity-75")  #{val}
+
