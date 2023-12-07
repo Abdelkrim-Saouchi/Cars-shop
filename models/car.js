@@ -11,6 +11,9 @@ const CarSchema = new Schema({
   category: { type: Schema.Types.ObjectId, ref: "Category", required: true },
 });
 
-// Url TODO
+// car's url
+CarSchema.virtual("url").get(function () {
+  return `cars/car/${this._id}`;
+});
 
 module.exports = mongoose.model("Car", CarSchema);

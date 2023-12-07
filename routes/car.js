@@ -33,9 +33,7 @@ router.post("/car/:id/update", (req, res) => {
 });
 
 // GET request to get one car
-router.get("/car/:id", (req, res) => {
-  res.send(`get request to display: ${req.params.id}`);
-});
+router.get("/car/:id", carController.carDetails);
 
 // GET request for All cars
 router.get("/", carController.carsList);
