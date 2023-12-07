@@ -1,0 +1,12 @@
+extends layout
+
+block content 
+  h2(class="mb-4 text-3xl md:text-4xl font-bold") List of available brands: 
+  ul(class="mb-4 grid grid-cols-1 md:grid-cols-3 gap-4") 
+    each brand in brands 
+      li(class="border border-black rounded p-4 flex flex-col gap-2 items-center") 
+        img(src="/images/logo-placeholder-image.png", alt="brand", class="")
+        h3(class="text-2xl md:text-3xl font-bold") #{brand.name} 
+        div(class="p-2 flex gap-2 flex-wrap") 
+          each type in brand.category 
+            div(class="p-2 w-fit border border-black rounded bg-white hover:bg-black hover:text-white") #{type.name}

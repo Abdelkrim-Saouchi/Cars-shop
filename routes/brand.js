@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const brandController = require("../controllers/brandController");
 
 // GET request to create brand
 router.get("/brand/create", (req, res, next) => {
@@ -37,8 +38,6 @@ router.get("/brand/:id", (req, res, next) => {
 });
 
 // All Brands list routes
-router.get("/", (req, res, next) => {
-  res.send("All brands list: not implemented");
-});
+router.get("/", brandController.brandList);
 
 module.exports = router;
