@@ -10,3 +10,5 @@ block content
     p  #[b type:] #{car.category.name} 
     p  #[b price:] #{car.price.toLocaleString('en-US')}$ 
     p  #[b number in stock:] #{car.numberInStock}
+  div 
+    a(href=car.url+"/delete", class="p-2 bg-black text-white rounded") Delete 

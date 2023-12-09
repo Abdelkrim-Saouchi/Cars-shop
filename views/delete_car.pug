@@ -1,0 +1,8 @@
+extends layout 
+
+block content 
+  h2(class="mb-3 text-3xl md:text-4xl font-bold") #{title}: #{car.name}
+  p(class="mb-3 text-xl") Do you really want to delete this car?
+  form(method ="POST", action="")
+    input(type="hidden", name="carId", value=car._id, required)
+    button(type="submit", class="p-2 rounded bg-black text-white") Delete

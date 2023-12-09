@@ -13,14 +13,10 @@ router.post("/car/create", (req, res) => {
 });
 
 // GET request to delete car
-router.get("/car/:id/delete", (req, res) => {
-  res.send(`get request to delete: ${req.params.id}`);
-});
+router.get("/car/:id/delete", carController.carDeleteGet);
 
 // POST request to delete car
-router.post("/car/:id/delete", (req, res) => {
-  res.send(`post request to delete: ${req.params.id}`);
-});
+router.post("/car/:id/delete", carController.carDeletePost);
 
 // GET request to update car
 router.get("/car/:id/update", (req, res) => {
