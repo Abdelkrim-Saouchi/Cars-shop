@@ -10,5 +10,6 @@ block content
     p  #[b type:] #{car.category.name} 
     p  #[b price:] #{car.price.toLocaleString('en-US')}$ 
     p  #[b number in stock:] #{car.numberInStock}
-  div 
+  div(class="flex gap-3 flex-wrap") 
     a(href=car.url+"/delete", class="p-2 bg-black text-white rounded") Delete 
+    a(href=car.url+"/update", class="p-2 bg-black text-white rounded") Update

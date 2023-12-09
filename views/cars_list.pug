@@ -1,6 +1,7 @@
 extends layout 
 
 block content 
+  a(href="/cars/car/create", class="my-4 p-3 block w-fit bg-black text-white rounded font-semibold") Create Car 
   h2(class="mb-4 text-3xl md:text-4xl font-bold") List of available Cars: 
   ul(class="mb-4 grid grid-cols-1 md:grid-cols-3 gap-4")
     each car in cars

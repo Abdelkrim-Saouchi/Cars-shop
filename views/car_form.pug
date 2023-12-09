@@ -1,0 +1,46 @@
+extends layout 
+
+block content 
+  h2(class="text-3xl md:text-4xl font-bold") #{title}
+  form(action="", method="post", class="flex flex-col gap-4 ring-1 p-2 max-w-fit")
+    div(class="flex items-center md:gap-4 text-xl justify-between flex-wrap") 
+      label(for="name") name:
+      input(type="text", id="name", name="carName", placeholder="Car Name", required, value=(car===undefined? '' : car.name), class="ring-1 p-2 rounded")
+
+    div(class="flex items-center gap-4 text-xl justify-between flex-wrap") 
+      label(for="description") description:
+      input(type="text", id="description", name="description", placeholder="Car Description", required, value=(car===undefined? '' : car.description), class="ring-1 p-2 rounded")
+
+    div(class="flex items-center gap-4 text-xl justify-between flex-wrap") 
+      label(for="price") price:
+      input(type="number", id="price", name="price", placeholder="Car Price", required, value=(car===undefined? 0 : car.price), class="ring-1 p-2 rounded")
+
+    div(class="flex items-center gap-4 text-xl justify-between flex-wrap") 
+      label(for="numberInStock") stock:
+      input(type="number", id="numberInStock", name="numberInStock", placeholder="Car's Number In Stock", required, value=(car===undefined? 0 : car.numberInStock), class="ring-1 p-2 rounded")
+
+    div(class="flex items-center gap-4 text-xl justify-between flex-wrap") 
+      label(for="brand") brand: 
+      select(id='brand', name="brand", type="select", placeholder="Select Brand", required, class="p-2 ring-1 bg-transparent")
+        for brand in brands 
+          if car 
+            option(value=brand._id, selected=(car.brand._id.toString() === brand._id.toString() ? 'selected' : 'false')) #{brand.name}   
+          else 
+            option(value=brand._id) #{brand.name} 
+
+    div(class="flex items-center gap-4 text-xl justify-between flex-wrap") 
+      label(for="category") category: 
+      select(id="category", name="category", type="select", placeholder="Select Category", required, class="p-2 ring-1 bg-transparent")
+        for category in categories 
+          if car 
+            option(value=category._id, selected=(car.category._id.toString() === category._id.toString() ? 'selected' : 'false')) #{category.name}
+          else 
+            option(value=category._id) #{category.name}
+
+    button(type="submit", class="p-2 bg-black text-white font-semibold rounded") Submit
+
+    if errors 
+      ul 
+        for error in errors 
+          li!= error.msg
+        
