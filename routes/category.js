@@ -33,9 +33,7 @@ router.post("/category/:id/update", (req, res) => {
 });
 
 // GET request to get one category
-router.get("/category/:id", (req, res) => {
-  res.send(`get request to get id: ${req.params.id}`);
-});
+router.get("/category/:id", categoryController.categoryDetails);
 
 // GET request for all categories
 router.get("/", categoryController.categoryList);

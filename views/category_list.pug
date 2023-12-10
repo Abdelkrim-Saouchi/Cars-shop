@@ -4,4 +4,5 @@ block content
   h2(class="mb-4 text-3xl md:text-4xl font-bold") List of available Categories: 
   ul(class="grid grid-cols-1 md:grid-cols-3 gap-4") 
     each category in categories 
-      li(class="p-2 border border-black rounded text-center font-semibold hover:bg-black hover:text-center hover:text-white") #{category.name}
+      li(class="flex border border-black rounded text-center font-semibold hover:bg-black hover:text-center hover:text-white")
+        a(href=category.url, class="p-2 grow")  #{category.name}
