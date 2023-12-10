@@ -1,6 +1,7 @@
 extends layout 
 
-block content 
+block content
+  a(href="/categories/category/create", class="my-4 p-3 block w-fit bg-black text-white rounded font-semibold") Create Category
   h2(class="mb-4 text-3xl md:text-4xl font-bold") List of available Categories: 
   ul(class="grid grid-cols-1 md:grid-cols-3 gap-4") 
     each category in categories 

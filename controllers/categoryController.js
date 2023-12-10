@@ -1,4 +1,5 @@
 const asyncHandler = require("express-async-handler");
+const { body, validationResult } = require("express-validator");
 const Category = require("../models/category");
 const Car = require("../models/car");
 
@@ -60,3 +61,97 @@ exports.categoryDeletePost = asyncHandler(async (req, res) => {
     res.redirect("/categories");
   }
 });
+
+// Get request to display create category form
+exports.categoryCreateGet = asyncHandler(async (req, res) => {
+  res.render("category_form", {
+    title: "Create Category",
+  });
+});
+
+// Post request to create category
+exports.categoryCreatePost = [
+  // validate and sanitize fields
+  body("name", "Category name must not be empty")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("description", "Category description must not be empty")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  // process data
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    const category = new Category({
+      name: req.body.name,
+      description: req.body.description,
+    });
+
+    if (!errors.isEmpty()) {
+      res.render("category_form", {
+        title: "Create Category",
+        category: category,
+        errors: errors.array(),
+      });
+    } else {
+      await category.save();
+      res.redirect(category.url);
+    }
+  }),
+];
+
+// Get request to display update category form
+exports.categoryUpdateGet = asyncHandler(async (req, res, next) => {
+  const category = await Category.findById(req.params.id).exec();
+
+  if (category == null) {
+    const err = new Error("Category not found");
+    err.status = 404;
+    return next(err);
+  }
+
+  res.render("category_form", {
+    title: "Update category",
+    category: category,
+  });
+});
+
+// Post request to update category
+exports.categoryUpdatePost = [
+  // Validate and sanitize fields
+  body("name", "Category name must not be empty")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("description", "Category description must not be empty")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  // Process data
+  asyncHandler(async (req, res) => {
+    const errors = validationResult(req);
+
+    const category = new Category({
+      name: req.body.name,
+      description: req.body.description,
+      _id: req.params.id,
+    });
+
+    if (!errors.isEmpty()) {
+      res.render("category_form", {
+        title: "Update Category",
+        category: category,
+        errors: errors.array(),
+      });
+    } else {
+      const updatedCategory = await Category.findByIdAndUpdate(
+        req.params.id,
+        category,
+        {},
+      );
+      res.redirect(updatedCategory.url);
+    }
+  }),
+];

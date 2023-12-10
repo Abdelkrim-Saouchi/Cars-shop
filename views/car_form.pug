@@ -2,7 +2,7 @@ extends layout
 
 block content 
   h2(class="text-3xl md:text-4xl font-bold") #{title}
-  form(action="", method="post", class="flex flex-col gap-4 ring-1 p-2 max-w-fit")
+  form(action="", method="post", class="my-4 flex flex-col gap-4 ring-1 p-2 max-w-fit")
     div(class="flex items-center md:gap-4 text-xl justify-between flex-wrap") 
       label(for="name") name:
       input(type="text", id="name", name="carName", placeholder="Car Name", required, value=(car===undefined? '' : car.name), class="ring-1 p-2 rounded")

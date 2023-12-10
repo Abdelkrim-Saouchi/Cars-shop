@@ -1,0 +1,19 @@
+extends layout 
+
+block content 
+  h2(class="text-3xl md:text-4xl font-bold") #{title}
+  form(action="", method="post", class="my-4 flex flex-col gap-4 ring-1 p-2 max-w-fit")
+    div(class="flex items-center md:gap-4 text-xl justify-between flex-wrap") 
+      label(for="name") name
+      input(type="text", id="name", name="name", placeholder="Category Name", required, value=(category === undefined ? '' : category.name), class="ring-1 p-2 rounded")
+
+    div(class="flex items-center md:gap-4 text-xl justify-between flex-wrap") 
+      label(for="description") description 
+      input(type="text", id="description", name="description", placeholder="Category Description", required, value=(category === undefined ? '' : category.description), class="ring-1 p-2 rounded")
+
+    button(type="submit", class="p-2 bg-black text-white font-semibold rounded") Submit
+
+  if errors 
+      ul(class="text-xl text-red-600") 
+        for error in errors 
+          li!= error.msg     

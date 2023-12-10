@@ -3,14 +3,10 @@ const router = express.Router();
 const categoryController = require("../controllers/categoryController");
 
 // GET request to create category
-router.get("/category/create", (req, res) => {
-  res.send("Get request to create category");
-});
+router.get("/category/create", categoryController.categoryCreateGet);
 
 // POST request to create category
-router.post("/category/create", (req, res) => {
-  res.send("Post request to create category");
-});
+router.post("/category/create", categoryController.categoryCreatePost);
 
 // GET request to delete category
 router.get("/category/:id/delete", categoryController.categoryDeleteGet);
@@ -19,14 +15,10 @@ router.get("/category/:id/delete", categoryController.categoryDeleteGet);
 router.post("/category/:id/delete", categoryController.categoryDeletePost);
 
 // GET request to update category
-router.get("/category/:id/update", (req, res) => {
-  res.send(`get request to update: ${req.params.id}`);
-});
+router.get("/category/:id/update", categoryController.categoryUpdateGet);
 
 // POST request to update category
-router.post("/category/:id/update", (req, res) => {
-  res.send(`post request to update: ${req.params.id}`);
-});
+router.post("/category/:id/update", categoryController.categoryUpdatePost);
 
 // GET request to get one category
 router.get("/category/:id", categoryController.categoryDetails);
