@@ -13,14 +13,10 @@ router.post("/category/create", (req, res) => {
 });
 
 // GET request to delete category
-router.get("/category/:id/delete", (req, res) => {
-  res.send(`get request to delete: ${req.params.id}`);
-});
+router.get("/category/:id/delete", categoryController.categoryDeleteGet);
 
 // POST request to delete category
-router.post("/category/:id/delete", (req, res) => {
-  res.send(`post request to delete: ${req.params.id}`);
-});
+router.post("/category/:id/delete", categoryController.categoryDeletePost);
 
 // GET request to update category
 router.get("/category/:id/update", (req, res) => {
