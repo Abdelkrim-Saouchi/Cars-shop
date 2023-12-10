@@ -18,9 +18,7 @@ router.post("/car/:id/delete", carController.carDeletePost);
 router.get("/car/:id/update", carController.carUpdateGet);
 
 // POST request to update car
-router.post("/car/:id/update", (req, res) => {
-  res.send(`post request to update: ${req.params.id}`);
-});
+router.post("/car/:id/update", carController.carUpdatePost);
 
 // GET request to get one car
 router.get("/car/:id", carController.carDetails);

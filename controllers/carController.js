@@ -127,7 +127,7 @@ exports.carUpdateGet = asyncHandler(async (req, res, next) => {
     err.status = 404;
     return next(err);
   }
-  console.log("car:", car);
+
   res.render("car_form", {
     title: "Update Car",
     brands: allBrands,
@@ -135,3 +135,60 @@ exports.carUpdateGet = asyncHandler(async (req, res, next) => {
     car: car,
   });
 });
+
+// Post request to handle car update
+exports.carUpdatePost = [
+  // validate and sanitize fields
+  body("carName", "Car name must not be empty")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("description", "Car description must not be empty")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("price", "Price must not be empty")
+    .isInt({ min: 1 })
+    .withMessage("Price must be greater than 0"),
+  body("numberInStock", "Stock number must be empty")
+    .isInt({ min: 0 })
+    .withMessage("Stock must be equal or greater than 0"),
+  body("brand", "Brand must not be empty").trim().isLength({ min: 1 }).escape(),
+  body("category", "Category must not be empty")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+
+  // Process data
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    const car = new Car({
+      brand: req.body.brand,
+      name: req.body.carName,
+      description: req.body.description,
+      price: req.body.price,
+      numberInStock: req.body.numberInStock,
+      category: req.body.category,
+      _id: req.params.id,
+    });
+
+    if (!errors.isEmpty()) {
+      const [allBrands, allCategories] = await Promise.all([
+        await Brand.find({}, "name").sort({ name: 1 }).exec(),
+        await Category.find({}, "name").sort({ name: 1 }).exec(),
+      ]);
+
+      res.render("car_form", {
+        title: "Create Car",
+        brands: allBrands,
+        categories: allCategories,
+        car: car,
+        errors: errors.array(),
+      });
+    } else {
+      const updatedCar = await Car.findByIdAndUpdate(req.params.id, car, {});
+      res.redirect(updatedCar.url);
+    }
+  }),
+];

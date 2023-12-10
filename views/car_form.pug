@@ -24,7 +24,7 @@ block content
       select(id='brand', name="brand", type="select", placeholder="Select Brand", required, class="p-2 ring-1 bg-transparent")
         for brand in brands 
           if car 
-            option(value=brand._id, selected=(car.brand._id.toString() === brand._id.toString() ? 'selected' : 'false')) #{brand.name}   
+            option(value=brand._id, selected=(car.brand._id.toString() === brand._id.toString() ? 'selected' : false)) #{brand.name}   
           else 
             option(value=brand._id) #{brand.name} 
 
@@ -33,14 +33,14 @@ block content
       select(id="category", name="category", type="select", placeholder="Select Category", required, class="p-2 ring-1 bg-transparent")
         for category in categories 
           if car 
-            option(value=category._id, selected=(car.category._id.toString() === category._id.toString() ? 'selected' : 'false')) #{category.name}
+            option(value=category._id, selected=(car.category._id.toString() === category._id.toString()? 'selected' : false)) #{category.name}
           else 
             option(value=category._id) #{category.name}
 
     button(type="submit", class="p-2 bg-black text-white font-semibold rounded") Submit
 
     if errors 
-      ul 
+      ul(class="text-xl text-red-600") 
         for error in errors 
           li!= error.msg
         
