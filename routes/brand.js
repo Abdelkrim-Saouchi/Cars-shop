@@ -16,9 +16,7 @@ router.post("/brand/create", (req, res, next) => {
 router.get("/brand/:id/delete", brandController.brandDeleteGet);
 
 // POST request to delete brand
-router.post("/brand/:id/delete", (req, res, next) => {
-  res.send("post request to delete Brand: not implemented");
-});
+router.post("/brand/:id/delete", brandController.brandDeletePost);
 
 // GET request to update brand
 router.get("/brand/:id/update", (req, res, next) => {
