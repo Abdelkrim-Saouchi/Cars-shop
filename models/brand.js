@@ -8,8 +8,9 @@ const BrandSchema = new Schema({
   category: [{ type: Schema.Types.ObjectId, ref: "Category" }],
 });
 
-// BrandSchema.virtual('url').get(function() {
-//     return `brands/`
-// })
+// Brand's url
+BrandSchema.virtual("url").get(function () {
+  return `/brands/brand/${this._id}`;
+});
 
 module.exports = mongoose.model("Brand", BrandSchema);

@@ -33,9 +33,7 @@ router.post("/brand/:id/update", (req, res, next) => {
 });
 
 // GET request to get one brand
-router.get("/brand/:id", (req, res, next) => {
-  res.send(`get request to specific brand id: ${req.params.id}`);
-});
+router.get("/brand/:id", brandController.brandDetails);
 
 // All Brands list routes
 router.get("/", brandController.brandList);
