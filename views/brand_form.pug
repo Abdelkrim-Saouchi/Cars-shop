@@ -2,13 +2,22 @@ extends layout
 
 block content 
   h2(class="text-3xl md:text-4xl font-bold") #{title}
-  form(action="", method="post", class="my-4 flex flex-col gap-4 ring-1 p-2 max-w-fit")
+  form(action="", method="post", enctype="multipart/form-data", class="my-4 flex flex-col gap-4 ring-1 p-2 max-w-fit")
+    if brand 
+      div(class="")
+        p Current image: 
+        img(src=(brand.imgPath === undefined ? "/images/logo-placeholder-image.png" : brand.imgPath), alt="brand", class="w-40")
+        input(type="hidden", name="oldPath", value=brand.imgPath)
     div(class="flex items-center md:gap-4 text-xl justify-between flex-wrap") 
-      label(for="name") name
+      label(for="image") image:
+      input(type="file", id="image", name="image", class="ring-1 p-2 rounded")
+
+    div(class="flex items-center md:gap-4 text-xl justify-between flex-wrap") 
+      label(for="name") name:
       input(type="text", id="name", name="name", placeholder="Brand Name", required, value=(brand === undefined ? '' : brand.name), class="ring-1 p-2 rounded")
 
     div(class="flex items-center md:gap-4 text-xl justify-between flex-wrap") 
-      label(for="description") description 
+      label(for="description") description: 
       input(type="text", id="description", name="description", placeholder="Brand Description", required, value=(brand === undefined ? '' : brand.description), class="ring-1 p-2 rounded")
 
     div(class="flex items-center md:gap-4 text-xl flex-wrap") 
