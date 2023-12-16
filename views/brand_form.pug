@@ -1,0 +1,25 @@
+extends layout 
+
+block content 
+  h2(class="text-3xl md:text-4xl font-bold") #{title}
+  form(action="", method="post", class="my-4 flex flex-col gap-4 ring-1 p-2 max-w-fit")
+    div(class="flex items-center md:gap-4 text-xl justify-between flex-wrap") 
+      label(for="name") name
+      input(type="text", id="name", name="name", placeholder="Brand Name", required, value=(brand === undefined ? '' : brand.name), class="ring-1 p-2 rounded")
+
+    div(class="flex items-center md:gap-4 text-xl justify-between flex-wrap") 
+      label(for="description") description 
+      input(type="text", id="description", name="description", placeholder="Brand Description", required, value=(brand === undefined ? '' : brand.description), class="ring-1 p-2 rounded")
+
+    div(class="flex items-center md:gap-4 text-xl flex-wrap") 
+      for category in categories
+        div(class="flex items-center gap-2") 
+          input(type="checkbox", id=category.name, name="category", value=category._id, checked = category.checked)
+          label(for=category.name) #{category.name}
+
+    button(type="submit", class="p-2 bg-black text-white font-semibold rounded") Submit
+
+  if errors 
+      ul(class="text-xl text-red-600") 
+        for error in errors 
+          li!= error.msg     

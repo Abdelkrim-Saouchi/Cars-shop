@@ -3,14 +3,10 @@ const router = express.Router();
 const brandController = require("../controllers/brandController");
 
 // GET request to create brand
-router.get("/brand/create", (req, res, next) => {
-  res.send("Get request to create Brand: not implemented");
-});
+router.get("/brand/create", brandController.brandCreateGet);
 
 // POST request to create brand
-router.post("/brand/create", (req, res, next) => {
-  res.send("post request to create Brand: not implemented");
-});
+router.post("/brand/create", brandController.brandCreatePost);
 
 // GET request to delete brand
 router.get("/brand/:id/delete", brandController.brandDeleteGet);
