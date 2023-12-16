@@ -1,0 +1,14 @@
+extends layout 
+
+block content 
+  h2(class="mb-4 text-3xl md:text-4xl font-bold") #{title}: #{brand.name}
+  if cars.length 
+    p(class="text-xl") #[strong Delete the following cars before delete this brand:] 
+    ul(class="list-disc list-inside") 
+      for car in cars 
+        li #[a(href=car.url, class="text-blue-600 font-bold") #{car.name}]
+  else 
+    p(class="text-xl") Do you really want to delete this Brand?
+    form(action="", method="post")
+      input(type="hidden", name="brandId", value=brand._id, required)
+      button(type="submit", class="my-4 p-2 rounded bg-black text-white") Delete 
