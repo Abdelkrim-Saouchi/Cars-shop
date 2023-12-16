@@ -15,14 +15,10 @@ router.get("/brand/:id/delete", brandController.brandDeleteGet);
 router.post("/brand/:id/delete", brandController.brandDeletePost);
 
 // GET request to update brand
-router.get("/brand/:id/update", (req, res, next) => {
-  res.send("get request to update Brand: not implemented");
-});
+router.get("/brand/:id/update", brandController.brandUpdateGet);
 
 // POST request to update brand
-router.post("/brand/:id/update", (req, res, next) => {
-  res.send("post request to update Brand: not implemented");
-});
+router.post("/brand/:id/update", brandController.brandUpdatePost);
 
 // GET request to get one brand
 router.get("/brand/:id", brandController.brandDetails);
