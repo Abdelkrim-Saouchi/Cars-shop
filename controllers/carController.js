@@ -1,5 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
+const upload = require("../storage");
+const fs = require("fs");
 const Car = require("../models/car");
 const Brand = require("../models/brand");
 const Category = require("../models/category");
@@ -39,7 +41,14 @@ exports.carDeleteGet = asyncHandler(async (req, res) => {
 });
 
 // Post request to delete specific car
-exports.carDeletePost = asyncHandler(async (req, res) => {
+exports.carDeletePost = asyncHandler(async (req, res, next) => {
+  // delete old image from the server
+  if (req.body.oldPath !== "") {
+    fs.unlink("public" + req.body.oldPath, (err) => {
+      if (err) next(err);
+    });
+  }
+  // delete car from db
   await Car.findByIdAndDelete(req.body.carId);
   res.redirect("/cars");
 });
@@ -60,6 +69,8 @@ exports.carCreateGet = asyncHandler(async (req, res) => {
 
 // Post request to create car
 exports.carCreatePost = [
+  // upload image
+  upload.single("carImage"),
   // validate and sanitize fields
   body("carName", "Car name must not be empty")
     .trim()
@@ -85,6 +96,14 @@ exports.carCreatePost = [
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
 
+    // handle empty file
+    let imgPath;
+    console.log("req.file", req.file);
+    if (req.file) {
+      imgPath = `/uploads/${req.file.filename}`;
+    }
+    console.log("imgPath:", imgPath);
+
     const car = new Car({
       brand: req.body.brand,
       name: req.body.carName,
@@ -92,6 +111,7 @@ exports.carCreatePost = [
       price: req.body.price,
       numberInStock: req.body.numberInStock,
       category: req.body.category,
+      imgPath: imgPath,
     });
 
     if (!errors.isEmpty()) {
@@ -138,6 +158,8 @@ exports.carUpdateGet = asyncHandler(async (req, res, next) => {
 
 // Post request to handle car update
 exports.carUpdatePost = [
+  // upload image
+  upload.single("carImage"),
   // validate and sanitize fields
   body("carName", "Car name must not be empty")
     .trim()
@@ -163,15 +185,43 @@ exports.carUpdatePost = [
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
 
-    const car = new Car({
-      brand: req.body.brand,
-      name: req.body.carName,
-      description: req.body.description,
-      price: req.body.price,
-      numberInStock: req.body.numberInStock,
-      category: req.body.category,
-      _id: req.params.id,
-    });
+    // Handle changing image or not
+    let car = null;
+    console.log("run 1:", req.file);
+    if (req.file) {
+      // delete old image from server
+      if (req.body.oldPath !== "") {
+        fs.unlink("public" + req.body.oldPath, (err) => {
+          if (err) {
+            next(err);
+          }
+        });
+      }
+      console.log("run 2");
+      // Update car info with new imgPath
+      car = new Car({
+        brand: req.body.brand,
+        name: req.body.carName,
+        description: req.body.description,
+        price: req.body.price,
+        numberInStock: req.body.numberInStock,
+        category: req.body.category,
+        imgPath: `/uploads/${req.file.filename}`,
+        _id: req.params.id,
+      });
+    } else {
+      // Update car info with old imgPath
+      car = new Car({
+        brand: req.body.brand,
+        name: req.body.carName,
+        description: req.body.description,
+        price: req.body.price,
+        numberInStock: req.body.numberInStock,
+        category: req.body.category,
+        imgPath: req.body.oldPath,
+        _id: req.params.id,
+      });
+    }
 
     if (!errors.isEmpty()) {
       const [allBrands, allCategories] = await Promise.all([
