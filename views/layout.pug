@@ -6,9 +6,10 @@ html(lang="en")
     meta(name="viewport", content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0")
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
+    script(src="/javascripts/scripts.js" defer) 
   body(class='flex flex-col min-h-screen')
     header(class='px-6 py-2 flex justify-between items-center gap-4 bg-black text-white text-md md:text-xl') 
-      h1(class='font-bold text-xl md:text-2xl') Car Shop 
+      a(href="/", class='font-bold text-xl md:text-2xl') Car Shop 
       nav 
         ul(class='flex gap-4 items-center justify-between') 
           li(class='font-semibold') 
