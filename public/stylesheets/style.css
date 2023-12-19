@@ -576,6 +576,10 @@ video {
   width: 75%;
 }
 
+.w-40 {
+  width: 10rem;
+}
+
 .w-fit {
   width: -moz-fit-content;
   width: fit-content;
