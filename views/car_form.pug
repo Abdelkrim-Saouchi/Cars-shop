@@ -2,7 +2,16 @@ extends layout
 
 block content 
   h2(class="text-3xl md:text-4xl font-bold") #{title}
-  form(action="", method="post", class="my-4 flex flex-col gap-4 ring-1 p-2 max-w-fit")
+  form(action="", method="post", enctype="multipart/form-data", class="my-4 flex flex-col gap-4 ring-1 p-2 max-w-fit")
+    if car 
+      div(class="")
+        p Current image: 
+        img(src=(car.imgPath === undefined ? "/images/logo-placeholder-image.png" : car.imgPath), alt="car", class="w-40")
+        input(type="hidden", name="oldPath", value=car.imgPath)
+    div(class="flex items-center md:gap-4 text-xl justify-between flex-wrap") 
+      label(for="image") image:
+      input(type="file", id="image", name="carImage", class="ring-1 p-2 rounded")
+
     div(class="flex items-center md:gap-4 text-xl justify-between flex-wrap") 
       label(for="name") name:
       input(type="text", id="name", name="carName", placeholder="Car Name", required, value=(car===undefined? '' : car.name), class="ring-1 p-2 rounded")

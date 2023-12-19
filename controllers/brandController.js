@@ -1,5 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
+const upload = require("../storage");
+const fs = require("fs");
 const Brand = require("../models/brand");
 const Car = require("../models/car");
 const Category = require("../models/category");
@@ -55,6 +57,13 @@ exports.brandDeletePost = asyncHandler(async (req, res) => {
       cars: cars,
     });
   } else {
+    // delete old image from server
+    if (req.body.oldPath !== "") {
+      fs.unlink("public" + req.body.oldPath, (err) => {
+        if (err) next(err);
+      });
+    }
+    // Delete brand from db
     await Brand.findByIdAndDelete(req.body.brandId);
     res.redirect("/brands");
   }
@@ -71,6 +80,9 @@ exports.brandCreateGet = asyncHandler(async (req, res) => {
 
 // Post request to create brand
 exports.brandCreatePost = [
+  // upload image
+  upload.single("image"),
+
   // handle no checked category
   (req, res, next) => {
     req.body.category =
@@ -87,14 +99,21 @@ exports.brandCreatePost = [
     .isLength({ min: 1 })
     .escape(),
   body("category.*").escape(),
+
   // process data
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
 
+    // handle empty file
+    let imgPath;
+    if (req.file) {
+      imgPath = `/uploads/${req.file.filename}`;
+    }
     const brand = new Brand({
       name: req.body.name,
       description: req.body.description,
       category: req.body.category,
+      imgPath: imgPath,
     });
 
     if (!errors.isEmpty()) {
@@ -141,6 +160,8 @@ exports.brandUpdateGet = asyncHandler(async (req, res, next) => {
 
 // Post request to handle update brand
 exports.brandUpdatePost = [
+  // upload image
+  upload.single("image"),
   // handle no checked category
   (req, res, next) => {
     req.body.category =
@@ -161,12 +182,34 @@ exports.brandUpdatePost = [
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
 
-    const brand = new Brand({
-      name: req.body.name,
-      description: req.body.description,
-      category: req.body.category,
-      _id: req.params.id,
-    });
+    // Handle changing image file or not
+    let brand = null;
+    if (req.file) {
+      // delete old image from server
+      if (req.body.oldPath !== "") {
+        fs.unlink("public" + req.body.oldPath, (err) => {
+          if (err) {
+            next(err);
+          }
+        });
+      }
+      // create new brand obj with new image path
+      brand = new Brand({
+        name: req.body.name,
+        description: req.body.description,
+        category: req.body.category,
+        imgPath: `/uploads/${req.file.filename}`,
+        _id: req.params.id,
+      });
+    } else {
+      brand = new Brand({
+        name: req.body.name,
+        description: req.body.description,
+        category: req.body.category,
+        imgPath: req.body.oldPath,
+        _id: req.params.id,
+      });
+    }
 
     if (!errors.isEmpty()) {
       const categories = await Category.find({}, "name").exec();

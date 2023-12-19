@@ -9,6 +9,7 @@ const CarSchema = new Schema({
   price: { type: Number, required: true },
   numberInStock: { type: Number, default: 0 },
   category: { type: Schema.Types.ObjectId, ref: "Category", required: true },
+  imgPath: String,
 });
 
 // car's url
