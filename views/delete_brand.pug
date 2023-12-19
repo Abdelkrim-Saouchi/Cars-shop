@@ -11,4 +11,5 @@ block content
     p(class="text-xl") Do you really want to delete this Brand?
     form(action="", method="post")
       input(type="hidden", name="brandId", value=brand._id, required)
+      input(type="hidden", name="oldPath", value=brand.imgPath, required)
       button(type="submit", class="my-4 p-2 rounded bg-black text-white") Delete 

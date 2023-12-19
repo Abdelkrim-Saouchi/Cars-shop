@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 const upload = require("../storage");
+const fs = require("fs");
 const Brand = require("../models/brand");
 const Car = require("../models/car");
 const Category = require("../models/category");
@@ -56,6 +57,13 @@ exports.brandDeletePost = asyncHandler(async (req, res) => {
       cars: cars,
     });
   } else {
+    // delete old image from server
+    if (req.body.oldPath !== "") {
+      fs.unlink("public" + req.body.oldPath, (err) => {
+        if (err) next(err);
+      });
+    }
+    // Delete brand from db
     await Brand.findByIdAndDelete(req.body.brandId);
     res.redirect("/brands");
   }
@@ -177,6 +185,15 @@ exports.brandUpdatePost = [
     // Handle changing image file or not
     let brand = null;
     if (req.file) {
+      // delete old image from server
+      if (req.body.oldPath !== "") {
+        fs.unlink("public" + req.body.oldPath, (err) => {
+          if (err) {
+            next(err);
+          }
+        });
+      }
+      // create new brand obj with new image path
       brand = new Brand({
         name: req.body.name,
         description: req.body.description,
