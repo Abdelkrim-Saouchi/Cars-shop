@@ -206,7 +206,7 @@ exports.brandUpdatePost = [
         name: req.body.name,
         description: req.body.description,
         category: req.body.category,
-        imgPath: req.body.oldPath,
+        imgPath: req.body.oldPath === ''? undefined : req.body.oldPath,
         _id: req.params.id,
       });
     }
