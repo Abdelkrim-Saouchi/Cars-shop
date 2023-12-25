@@ -98,11 +98,9 @@ exports.carCreatePost = [
 
     // handle empty file
     let imgPath;
-    console.log("req.file", req.file);
     if (req.file) {
       imgPath = `/uploads/${req.file.filename}`;
     }
-    console.log("imgPath:", imgPath);
 
     const car = new Car({
       brand: req.body.brand,
@@ -187,7 +185,6 @@ exports.carUpdatePost = [
 
     // Handle changing image or not
     let car = null;
-    console.log("run 1:", req.file);
     if (req.file) {
       // delete old image from server
       if (req.body.oldPath !== "") {
@@ -197,7 +194,6 @@ exports.carUpdatePost = [
           }
         });
       }
-      console.log("run 2");
       // Update car info with new imgPath
       car = new Car({
         brand: req.body.brand,
@@ -218,7 +214,7 @@ exports.carUpdatePost = [
         price: req.body.price,
         numberInStock: req.body.numberInStock,
         category: req.body.category,
-        imgPath: req.body.oldPath,
+        imgPath: req.body.oldPath === ''? undefined : req.body.oldPath,
         _id: req.params.id,
       });
     }
