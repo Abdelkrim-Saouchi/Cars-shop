@@ -6,7 +6,7 @@ block content
     if brand 
       div(class="")
         p Current image: 
-        img(src=(brand.imgPath === undefined ? "/images/logo-placeholder-image.png" : brand.imgPath), alt="brand", class="w-40")
+        img(src=(brand.imgUrl === undefined ? "/images/logo-placeholder-image.png" : brand.imgUrl), alt="brand", class="w-40")
         input(type="hidden", name="oldPath", value=brand.imgPath)
     div(class="flex items-center md:gap-4 text-xl justify-between flex-wrap") 
       label(for="image") image:

@@ -19,7 +19,11 @@ const app = express();
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
-app.use(helmet())
+app.use(helmet.contentSecurityPolicy({
+  directives: {
+    'img-src': ["'self'", 'https://res.cloudinary.com']
+  }
+}))
 app.use(compression())
 app.use(logger("dev"));
 app.use(express.json());

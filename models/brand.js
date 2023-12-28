@@ -7,6 +7,8 @@ const BrandSchema = new Schema({
   description: { type: String, required: true },
   category: [{ type: Schema.Types.ObjectId, ref: "Category" }],
   imgPath: String,
+  imgUrl: String,
+  publicId: String,
 });
 
 // Brand's url

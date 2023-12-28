@@ -9,6 +9,7 @@
     "tailwind:css": "npx tailwindcss -i public/stylesheets/tailwind.css -o public/stylesheets/style.css --watch"
   },
   "dependencies": {
+    "cloudinary": "^1.41.1",
     "compression": "^1.7.4",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",

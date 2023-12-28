@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 const upload = require("../storage");
 const fs = require("fs");
+const cloudinary = require('../cloudinary')
 const Brand = require("../models/brand");
 const Car = require("../models/car");
 const Category = require("../models/category");
@@ -44,7 +45,7 @@ exports.brandDeleteGet = asyncHandler(async (req, res) => {
 });
 
 // Post request to handle delete brand
-exports.brandDeletePost = asyncHandler(async (req, res) => {
+exports.brandDeletePost = asyncHandler(async (req, res, next) => {
   const [brand, cars] = await Promise.all([
     await Brand.findById(req.params.id).exec(),
     await Car.find({ brand: req.params.id }, "name").sort({ name: 1 }).exec(),
@@ -62,6 +63,10 @@ exports.brandDeletePost = asyncHandler(async (req, res) => {
       fs.unlink("public" + req.body.oldPath, (err) => {
         if (err) next(err);
       });
+    }
+    // delete old image from cloudinary
+    if(brand.publicId) {
+      await cloudinary.uploader.destroy(brand.publicId);
     }
     // Delete brand from db
     await Brand.findByIdAndDelete(req.body.brandId);
@@ -106,14 +111,21 @@ exports.brandCreatePost = [
 
     // handle empty file
     let imgPath;
+    let imgUrl;
+    let publicId;
     if (req.file) {
       imgPath = `/uploads/${req.file.filename}`;
+      const result = await cloudinary.uploader.upload(req.file.path);
+      imgUrl = result.secure_url;
+      publicId = result.public_id;
     }
     const brand = new Brand({
       name: req.body.name,
       description: req.body.description,
       category: req.body.category,
       imgPath: imgPath,
+      imgUrl: imgUrl,
+      publicId: publicId,
     });
 
     if (!errors.isEmpty()) {
@@ -185,6 +197,8 @@ exports.brandUpdatePost = [
     // Handle changing image file or not
     let brand = null;
     if (req.file) {
+      // get old brand record
+      const oldBrand = await Brand.findById(req.params.id).exec();
       // delete old image from server
       if (req.body.oldPath !== "") {
         fs.unlink("public" + req.body.oldPath, (err) => {
@@ -192,13 +206,24 @@ exports.brandUpdatePost = [
             next(err);
           }
         });
+        // delete old image form cloudinary
+        if (oldBrand.publicId) {
+          await cloudinary.uploader.destroy(oldBrand.publicId)
+        }
       }
-      // create new brand obj with new image path
+      // upload new image to cloudinary
+      const result = await cloudinary.uploader.upload(req.file.path);
+      const imgUrl = result.secure_url;
+      const publicId = result.public_id;
+      
+      // create new brand obj with new image info
       brand = new Brand({
         name: req.body.name,
         description: req.body.description,
         category: req.body.category,
         imgPath: `/uploads/${req.file.filename}`,
+        imgUrl: imgUrl,
+        publicId: publicId,
         _id: req.params.id,
       });
     } else {
