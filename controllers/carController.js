@@ -2,13 +2,14 @@ const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 const upload = require("../storage");
 const fs = require("fs");
+const cloudinary = require('../cloudinary');
 const Car = require("../models/car");
 const Brand = require("../models/brand");
 const Category = require("../models/category");
 
 // Get request to Display list of all cars
 exports.carsList = asyncHandler(async (req, res) => {
-  const allCars = await Car.find({}, "name price").exec();
+  const allCars = await Car.find({}).exec();
   res.render("cars_list", {
     title: "Cars",
     cars: allCars,
@@ -47,6 +48,11 @@ exports.carDeletePost = asyncHandler(async (req, res, next) => {
     fs.unlink("public" + req.body.oldPath, (err) => {
       if (err) next(err);
     });
+  }
+  // delete old image from cloudinary
+  const car = Car.findById(req.params.id).exec();
+  if(car.publicId) {
+    await cloudinary.uploader.destroy(car.publicId);
   }
   // delete car from db
   await Car.findByIdAndDelete(req.body.carId);
@@ -98,8 +104,14 @@ exports.carCreatePost = [
 
     // handle empty file
     let imgPath;
+    let imgUrl;
+    let publicId;
+
     if (req.file) {
       imgPath = `/uploads/${req.file.filename}`;
+      const result = await cloudinary.uploader.upload(req.file.path);
+      imgUrl = result.secure_url;
+      publicId = result.public_id;
     }
 
     const car = new Car({
@@ -110,6 +122,8 @@ exports.carCreatePost = [
       numberInStock: req.body.numberInStock,
       category: req.body.category,
       imgPath: imgPath,
+      imgUrl: imgUrl,
+      publicId: publicId,
     });
 
     if (!errors.isEmpty()) {
@@ -186,6 +200,8 @@ exports.carUpdatePost = [
     // Handle changing image or not
     let car = null;
     if (req.file) {
+      // get old car record
+      const oldCar = await Car.findById(req.params.id).exec();
       // delete old image from server
       if (req.body.oldPath !== "") {
         fs.unlink("public" + req.body.oldPath, (err) => {
@@ -193,7 +209,15 @@ exports.carUpdatePost = [
             next(err);
           }
         });
+        // delete old image form cloudinary
+        if (oldCar.publicId) {
+          await cloudinary.uploader.destroy(oldCar.publicId)
+        }
       }
+      // upload new image to cloudinary
+      const result = await cloudinary.uploader.upload(req.file.path);
+      const imgUrl = result.secure_url;
+      const publicId = result.public_id;
       // Update car info with new imgPath
       car = new Car({
         brand: req.body.brand,
@@ -203,6 +227,8 @@ exports.carUpdatePost = [
         numberInStock: req.body.numberInStock,
         category: req.body.category,
         imgPath: `/uploads/${req.file.filename}`,
+        imgUrl: imgUrl,
+        publicId: publicId,
         _id: req.params.id,
       });
     } else {

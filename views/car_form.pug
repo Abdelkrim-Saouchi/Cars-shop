@@ -6,7 +6,7 @@ block content
     if car 
       div(class="")
         p Current image: 
-        img(src=(car.imgPath === undefined ? "/images/logo-placeholder-image.png" : car.imgPath), alt="car", class="w-40")
+        img(src=(car.imgUrl === undefined ? "/images/logo-placeholder-image.png" : car.imgUrl), alt="car", class="w-40")
         input(type="hidden", name="oldPath", value=car.imgPath)
     div(class="flex items-center md:gap-4 text-xl justify-between flex-wrap") 
       label(for="image") image:
